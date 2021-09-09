@@ -1,6 +1,8 @@
 package com.ivoronline.springboot_db_query_native_named_repository_dto.controllers;
 
-import com.ivoronline.springboot_db_query_native_named_repository_dto.entities.Person;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ivoronline.springboot_db_query_native_named_repository_dto.dto.PersonDTO;
 import com.ivoronline.springboot_db_query_native_named_repository_dto.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,39 +14,26 @@ public class MyController {
   @Autowired PersonRepository personRepository;
 
   //================================================================
-  // RETURN PERSON
+  // RETURN PERSON DTO
   //================================================================
-  @RequestMapping("ReturnPerson")
-  Person returnPerson() {
-    Person person = personRepository.returnPerson("John", 20);
-    return person;
-  }
+  @RequestMapping("ReturnPersonDTO")
+  PersonDTO returnPersonDTO() throws JsonProcessingException {
 
-  //================================================================
-  // RETURN ARRAY
-  //================================================================
-  @RequestMapping("ReturnArray")
-  Object[] returnArray() {
-    Object[] array = (Object[]) personRepository.returnArray("John", 20);
-    return   array;
-  }
+    //GET COLUMNS
+    Object[] columns = (Object[]) personRepository.returnObjectArray("John");  //["John",20]
 
-  //================================================================
-  // RETURN STRING
-  //================================================================
-  @RequestMapping("ReturnString")
-  String returnString() {
-    String nameAge = personRepository.returnString("John", 20);
-    return nameAge;
-  }
+    //DISPLAY COLUMNS
+    String columnsJSON = new ObjectMapper().writeValueAsString(columns);
+    System.out.println(columnsJSON);
 
-  //================================================================
-  // RETURN SCALAR
-  //================================================================
-  @RequestMapping("ReturnScalar")
-  Integer returnScalar() {
-    Integer age = personRepository.returnScalar("John", 20);
-    return  age;
+    //MAP COLUMNS INTO DTO
+    PersonDTO personDTO      = new PersonDTO();
+              personDTO.name = (String ) columns[0];
+              personDTO.age  = (Integer) columns[1];
+
+    //RETURN DTO
+    return personDTO;
+
   }
 
 }
