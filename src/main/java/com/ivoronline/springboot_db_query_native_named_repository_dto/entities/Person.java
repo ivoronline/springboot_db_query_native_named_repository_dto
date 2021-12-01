@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 
 @NamedNativeQuery(
-  name  = "Person.returnObjectArray",
+  name  = "Person.returnPersonDTO",
   query = "SELECT name, age FROM Person WHERE name = :name"
 )
 @Entity

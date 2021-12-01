@@ -20,7 +20,7 @@ public class MyController {
   PersonDTO returnPersonDTO() throws JsonProcessingException {
 
     //GET COLUMNS
-    Object[] columns = (Object[]) personRepository.returnObjectArray("John");  //["John",20]
+    Object[] columns = (Object[]) personRepository.returnPersonDTO("John");  //["John",20]
 
     //DISPLAY COLUMNS
     String columnsJSON = new ObjectMapper().writeValueAsString(columns);
